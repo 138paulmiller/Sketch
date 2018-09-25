@@ -1,0 +1,36 @@
+//???????????????
+Add Primitive::Parametric Class 
+	- use it to define curves, surfaces (extend surface -> sphere, torus, grid)
+	template such that Param Type of VecFunc is what Type ParametricVertex is:
+	VecFunc =  
+	Parametric(VecFunc funcX,VecFunc funcY,VecFunc funcZ)
+	using ParametricVertex = PointVertex;
+
+
+r(t)= x(t)i + y(t)j + z(t)k //Parametric Curve
+r(u,v)= x(u,v)i + y(u,v)j + z(u,v)k //Paramtric Surface
+//initialize using an interval [a, b] where a and b are vecs. 
+	assert(len(a) == len(b))
+	If len(a) == 1, 
+		iterate by tessalation factor
+	else,
+		for(u to len(a) inc by tesslation)
+		for(v to len(b) inc by tesslation)
+			point = {
+				x( {u,v} ),
+				y( {u,v} ),
+				z( {u,v} )
+					}
+
+CREATE SHADER MAP (DO NOT ALLOW DUPS, FREE ON DESTROY)
+
+
+
+// NVI idiom? maybe in renbderable
+
+
+QuadTree - Build Procedural genrated CITY!!!
+//make REnderTargets objects
+Create Render / Math / IO / Object nbamespaces to make API easier to use 
+
+//Create instancing classe

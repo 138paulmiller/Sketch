@@ -1,0 +1,10 @@
+
+
+
+Algorithms:
+marching_cubes:
+	http://www.cs.carleton.edu/cs_comps/0405/shape/marching_cubes.html
+
+
+half-edge structure:
+	http://kaba.hilvi.org/homepage/blog/halfedge/halfedge.htm

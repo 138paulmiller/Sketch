@@ -24,13 +24,13 @@ int demo_water()
 
 	const int waterWidth	= 128;
 	const int waterHeight	= 128;
-	float scale = 20;
+	float scale = 1;
 	float speed = 0.1;
 	bool zUp= true;
 
-	Water water(waterWidth, waterHeight, 0.005f);
+	Water water(waterWidth, waterHeight, 1, 0.005f);
 	
-	pos = Vec3(0.5, scale, -0.5);
+	pos = Vec3(0.5, scale*0.90, -0.5);
 
 	camera.setPos(pos);
 
@@ -38,12 +38,12 @@ int demo_water()
 
 	while (window.isOpen())
 	{
-
-		//glCullFace(GL_FRONT);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
 		window.update();
 		time = window.getTime();
 		const float temp = cos(time / 4);
-		window.clear(temp*255.0f, 0.33f, 0.01f, 1);
+		window.clear(0,0,0,1);
 		delta = window.getTimeDelta();
 
 		

@@ -16,7 +16,7 @@ class Water : public RenderArray<Texture2dVertex, ShaderType_Custom>
 {
 	using Parent = RenderArray<Texture2dVertex, ShaderType_Custom>;
 public:
-	Water(int width, int height, float tessalation = 0.5);
+	Water(int width, int height, float scale =1, float tessalation = 0.5);
 	~Water() { }
 
 	struct NoiseData
@@ -50,4 +50,6 @@ private:
 
 	Shader		_shader;
 	NoiseData	_noise[NOISE_COUNT];
+
+	float _scale;
 };

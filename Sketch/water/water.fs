@@ -93,7 +93,7 @@ void main()
 	materials[0].ka =		vec3(0.0215	, 	0.1745	, 	0.0215	);
 	materials[0].kd =		vec3(0.07568,	0.61424 ,	0.07568	);
 	materials[0].ks =		vec3(1.0	,	1.0		,	1.0);
-	materials[0].alpha =	0.6 * 128;
+	materials[0].alpha =	0.06 * 128;
 	materials[0].base = color;
 	materials[0].mix = 0.5;
 

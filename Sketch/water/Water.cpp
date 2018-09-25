@@ -1,35 +1,25 @@
 #include <water/Water.h>
 
 
-
+//https://developer.nvidia.com/gpugems/GPUGems/gpugems_ch01.html
 //Grid
-Water::Water(int width, int height, float tessalation)
+///texture width/height
+Water::Water(int width, int height, float scale,float tessalation)
 {
+	_scale = scale;
 	Parent::setDrawMode(GL_TRIANGLE_STRIP);
+	Parent::setDrawMode(GL_TRIANGLES);
 	//Parent::setWireframe(true);
 	_shader.load("water/water");
-
-	PerlinNoise	perlinNoise(9);
-
-	auto lambda0 = [&perlinNoise](float u, float v)
-	{
-		const float c1 = 1, c2 = 2;
-		Color3 color =
-		{
-			perlinNoise.noise(u *c1,		v * c1,		1),
-			perlinNoise.noise(u* c2,		v*c2,		1),
-			0,//perlinNoise.noise(u * c1 ,	v * c2,	1),
-		};
-		return color;
-	};
 	//init verts/indices
-	float halfWidthN = 0.5;
+	float halfWidthN = 0.5 ;
 	float halfHeightN = 0.5;
 	float x, y;
 	int j = 0;
-
 	auto addVertex = [&](float x, float y, float u, float v)
 	{
+		x *= width;
+		y *= height;
 		_vertices.push_back(Texture2dVertex({ x,0,y }, { 0,1,0 }, { u,v }));
 		_indices.push_back(_vertices.size() - 1);
 	};
@@ -38,26 +28,37 @@ Water::Water(int width, int height, float tessalation)
 		y = v - halfHeightN;
 
 	//weave left to right through grid (change direction for each row)
-		if ((j++) % 2)
+
+		for (float u = 0; u < 1; u += tessalation)
 		{
-			for (float u = 1; u >= 0; u -= tessalation)
-			{
-				x = u - halfWidthN;
-				addVertex(x, y, u, v);
-				addVertex(x, y + tessalation, u, v + tessalation);
-			}
-		}
-		else
-		{
-			for (float u = 0; u <= 1; u += tessalation)
-			{
-				x = u - halfWidthN;
-				addVertex(x, y, u, v);
-				addVertex(x, y + tessalation, u, v + tessalation);
-			}
+			x = u - halfWidthN;
+			addVertex(x, y, u, v);
+			addVertex(x, y + tessalation, u, v + tessalation);
+			addVertex(x + tessalation, y , u + tessalation, v );
+
+
+
+			addVertex(x, y + tessalation, u, v + tessalation);
+			addVertex(x + tessalation, y + tessalation, u + tessalation, v + tessalation);
+			addVertex(x + tessalation, y, u + tessalation, v);
+
 		}
 	}
 
+
+	PerlinNoise	perlinNoise(9);
+
+	auto lambda0 = [&perlinNoise](float u, float v)
+	{
+		const float c1 = 1, c2 = 2;
+		Color3 color =
+		{
+			perlinNoise.noise(u,			v,			1),
+			perlinNoise.noise(u *c1,		v * c1,		1),
+			perlinNoise.noise(u* c2,		v*c2,		1),
+		};
+		return color;
+	};
 
 	generateNoiseTexture(NOISE_0, width, height, tessalation, lambda0);
 
@@ -93,6 +94,7 @@ void Water::onBind()
 {
 	Shader::push(&_shader);
 	_noise[0]._texture.bind(&_shader);
+	Shader::current()->setUniformFloat("scale", _scale);
 	//Parent::setWireframe(true);
 }
 void Water::onUnbind()
@@ -103,7 +105,8 @@ void Water::onUnbind()
 }
 
 void Water::onPreRender()
-{	}
+{
+}
 void Water::onRender()
 {	}
 

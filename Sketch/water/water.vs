@@ -7,9 +7,9 @@ uniform mat4 view;			//Camera View Transform
 uniform mat4 projection;	//3d -> 2d 
 
 
-attribute vec3 vs_pos;
-attribute vec3 vs_normal;
-attribute vec2 vs_uv ;
+in vec3 vs_pos;
+in vec3 vs_normal;
+in vec2 vs_uv ;
 
 
 smooth out vec3 fs_pos;
@@ -41,8 +41,13 @@ vec3 gerstner_wave_normal(vec2  uv, float t )
 	//for each wave
 	for(int i = 0; i <wave_count; i++)
 	{
-		float phase = waves[i].speed	* t;
-		float theta = dot(	waves[i].dir,	uv) *waves[i].frequency+ phase ;
+		float freq  = waves[i].frequency * t;
+		float phase = waves[i].speed * freq;
+		float amp	= waves[i].amplitude;
+
+		float theta = dot(waves[i].dir, uv) + freq + phase ;
+
+
 		float ampfreq = waves[i].amplitude *waves[i].frequency ;
 		
 		float omega = ampfreq* cos(theta);
@@ -52,7 +57,7 @@ vec3 gerstner_wave_normal(vec2  uv, float t )
 		norm.x -= waves[i].dir.x * omega; 
 		norm.z -= waves[i].dir.y * omega;
 	}
-	return norm;
+	return normalize(norm);
 }
 
 vec3 gerstner_wave_pos( vec2 uv, float t )
@@ -62,12 +67,15 @@ vec3 gerstner_wave_pos( vec2 uv, float t )
 	//for each wave 
 	for(int i = 0; i <wave_count ; i++)
 	{
-		float phase = waves[i].speed * t;
-		float theta = dot(waves[i].dir, uv) *waves[i].frequency + phase ;
+		float freq  = waves[i].frequency * t;
+		float phase = waves[i].speed * freq;
+		float amp	= waves[i].amplitude;
 
-		float ydelta =  waves[i].amplitude * sin(theta);
+		float theta = dot(waves[i].dir, uv) + freq + phase ;
+
+		float ydelta =  amp * sin(theta);
 		//set uv displacement
-		float xdelta = waves[i].steepness * waves[i].amplitude * cos(theta);
+		float xdelta = waves[i].steepness * amp * cos(theta);
 	
 		pos.y += ydelta;
 		pos.x += waves[i].dir.x * xdelta;
@@ -81,64 +89,75 @@ vec3 gerstner_wave_pos( vec2 uv, float t )
 
 void default_waves()
 {
-	wave_count = 3;
+	wave_count = 4;
 
 	waves[0].dir		=	vec2(0.4,0);	
-	waves[0].amplitude	=	0.4	;
-	waves[0].length		=	0.023;
-	waves[0].speed		=	0.60;
-	waves[0].steepness	=	0.5;			
-	waves[0].frequency	=	0.030;			
-
-	waves[1].dir		=	vec2(0,0.9);	
-	waves[1].amplitude	=	0.1703	;
-	waves[1].length		=	0.25;
-	waves[1].speed		=	0.02;
-	waves[1].steepness	=	0.8;			
-	waves[1].frequency	=	0.93;			
+	waves[0].amplitude	=	0.64;
+	waves[0].steepness	=	0.64;			
+	waves[0].frequency	=	0.64;
+	waves[0].speed		=	1.28;
 	
-	waves[2].dir		=	vec2(0.32,0.4);	
-	waves[2].amplitude	=	0.7703	;
-	waves[2].length		=	0.25;
-	waves[2].speed		=	0.12;
-	waves[2].steepness	=	0.04;			
-	waves[2].frequency	=	0.93;	
+	waves[1].dir		=	vec2(0.412,0.4);	
+	waves[1].amplitude	=	0.32;
+	waves[1].steepness	=	0.99;			
+	waves[1].frequency	=	0.00123;
+	waves[1].speed		=	0.56;
+
+	waves[2].dir		=	vec2(0.8,0.7);	
+	waves[2].amplitude	=	0.06;
+	waves[2].steepness	=	1.28;			
+	waves[2].frequency	=	0.77;
+	waves[2].speed		=	0.64;
+
+
+	waves[3].dir		=	vec2(0.03,0.4);	
+	waves[3].amplitude	=	0.046;
+	waves[3].steepness	=	1.0;
+	waves[3].frequency	=	0.16;
+	waves[3].speed		=	0.04;
+
 }
 
 
-void main()
+float perlin(vec2 uv, vec3 mix)
 {
 	vec4 noise0 = texture(sampler0, vs_uv);
-	
-	//TODO make uniforms
-	
+	//noise
+	float d				=	mix.x*noise0.x + mix.y*noise0.y + mix.z*noise0.z ;
+	return d;
+}
+
+vec3 lerp(vec3 a, vec3 b, float t)
+{
+	return a * t + (1-t)*b;
+}
+
+void main()
+{
 	default_waves();
 
-	vec2 uv = vs_pos.xz;//pos on ocean plane;
-	float t = time;
-	vec3 wave_pos = gerstner_wave_pos(uv, t);
-	uv = wave_pos.xz;
-	vec3 wave_normal = gerstner_wave_normal( uv, t);
+	//TODO make uniforms
+	vec3 mix			= vec3(1.89, -1.5, + 0.5);
+	float d				= perlin(normalize(vs_uv*time), mix) ;
+
+	vec3 pos			= vs_pos;
+	pos.y				+= d;
+
+	vec2 uv				= vs_pos.xz;	//pos on ocean plane;
+
+	float t				= time;
+	vec3 wave_pos		= gerstner_wave_pos(uv, t);
+	uv					= wave_pos.xz;
+	vec3 wave_normal	= gerstner_wave_normal( uv, t);
 
 
-	//noise
-	vec3 mixer = vec3(0.259, 0.812, 0.000012);
-	noise0 = noise0*vec4(mixer,1);
-	//displacement
-	float d =		noise0.x 
-				+	noise0.y 
-				;
-
-	vec3 pos   = vec3(	vs_pos.x,vs_pos.y+d, vs_pos.z);
-
-
-
-	pos = wave_pos*scale;
+	pos					= (pos + wave_pos)*scale;
+	vec3 norm			=  normalize(lerp(pos, wave_normal, 0.3));
 	//update normal (rotate by angle diff between new and old pos)
 	
 
 	fs_pos		=	(model * vec4(pos,1)).xyz;
 	fs_uv		=	vs_uv;
-	fs_normal	=	wave_normal;
+	fs_normal	=	norm;
 	gl_Position =	projection * view * vec4(fs_pos,1);
 }

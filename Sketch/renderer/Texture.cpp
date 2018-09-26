@@ -1,5 +1,5 @@
 #include <renderer/Texture.h>
-
+#include <stb_image.h>
 
 Texture::Texture(	
 			TextureType		  type,
@@ -35,8 +35,20 @@ Texture::Texture(
 Texture::~Texture()
 {
 }
+void Texture::load(const std::string filename, TextureFormat format)
+{
+	//int width, height;
+	//int comp;
+	//unsigned char* image = stbi_load(filename.c_str(), &width, &height, &comp, STBI_rgb_alpha);
 
-void Texture::load(GLuint * data, int width, int height, TextureFormat format)
+	//if (!image)
+	//	Error("Failed to load texture %s", filename.c_str());
+
+	//load(image, width, height, format);
+	//stbi_image_free(image);
+}
+
+void Texture::load(unsigned char * data, int width, int height, TextureFormat format)
 {
 	DebugAssert(data);
 	DebugAssert(m_texture != -1);

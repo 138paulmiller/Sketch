@@ -195,6 +195,9 @@
     <None Include="water\water.fs" />
     <None Include="water\water.vs" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Images\Skybox.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

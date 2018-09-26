@@ -8,7 +8,10 @@ uniform vec3 eye;			//Current Camera Position
 smooth in vec3 fs_pos;
 smooth in vec3 fs_normal; 
 smooth in vec2 fs_uv;
-in vec3 world_eye;
+
+uniform sampler2D sampler0;	//Perlin Noise
+uniform sampler3D sampler1;	//Skybox
+out vec4 out_FragColor;
 
 #define LIGHT_COUNT 8
 #define MATERIAL_COUNT 8
@@ -74,12 +77,11 @@ vec3 phong(Material mat, vec3 pos, vec3 norm, vec3 eye)
 }
 
 
-uniform sampler2D sampler0;	//create another that has a uniform sampler array
-out vec4 out_FragColor;
 //determine if uv, color
 void main()
 {
 	vec4 color= texture(sampler0, fs_uv);
+	//vec4 color= texture(sampler1, fs_uv);
 //TODO set by CPU
 	lights[0].pos = 	eye;
 	lights[0].intensity = 1.0;
@@ -93,7 +95,7 @@ void main()
 	materials[0].ka =		vec3(0.0215	, 	0.1745	, 	0.0215	);
 	materials[0].kd =		vec3(0.07568,	0.61424 ,	0.07568	);
 	materials[0].ks =		vec3(1.0	,	1.0		,	1.0);
-	materials[0].alpha =	0.06 * 128;
+	materials[0].alpha =	0.6 * 128;
 	materials[0].base = color;
 	materials[0].mix = 0.5;
 

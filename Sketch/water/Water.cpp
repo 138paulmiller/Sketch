@@ -48,29 +48,33 @@ Water::Water(int width, int height, float scale,float tessalation)
 
 	PerlinNoise	perlinNoise(9);
 
-	auto lambda0 = [&perlinNoise](float u, float v)
+	auto lambda0 = [&perlinNoise, scale](float u, float v)
 	{
-		const float c1 = 1, c2 = 2;
+		const float c1 = 64 , c2 = 128, c3 = 2048;
 		Color3 color =
 		{
-			perlinNoise.noise(u,			v,			1),
-			perlinNoise.noise(u *c1,		v * c1,		1),
-			perlinNoise.noise(u* c2,		v*c2,		1),
+			perlinNoise.noise(u * c1,		v * c1,		1),
+			perlinNoise.noise(u * c2,		v * c2,		1),
+			perlinNoise.noise(u * c3,		v * c3,		1),
 		};
 		return color;
 	};
 
-	generateNoiseTexture(NOISE_0, width, height, tessalation, lambda0);
+	generateNoiseTexture(width, height, tessalation, lambda0);
 
+	loadSkyBox("../Images/Skybox.png");
 
 }
 
-
-void Water::generateNoiseTexture(NoiseIndex index, int width, int height, float tessalation, const std::function<Color3(float u, float v)> & perVertex)
+void Water::loadSkyBox( const std::string &filename)
 {
-	DebugAssert(index < NOISE_COUNT);
-	NoiseData * noise3d = &_noise[index];
+	_skybox.load(filename, TEXTURE_RGBA);
+	
+}
 
+void Water::generateNoiseTexture(int width, int height, float tessalation, const std::function<Color3(float u, float v)> & perVertex)
+{
+	
 	float u, v;
 	for (int j = 0; j < height; j++)
 	{
@@ -79,27 +83,28 @@ void Water::generateNoiseTexture(NoiseIndex index, int width, int height, float 
 		for (int i = 0; i < width; i++)
 		{
 			u = (float)i / (float)width;
-			noise3d->_color3Data.push_back(perVertex(u, v));
+			_noise._color3Data.push_back(perVertex(u, v));
 		}
 	}
 
-
-	float * data = &(noise3d->_color3Data[0][0]);
-	noise3d->_texture.load(data, width, height, TEXTURE_RGB);
-	noise3d = 0;
+	float * data = &(_noise._color3Data[0][0]);
+	_noise.load(data, width, height, TEXTURE_RGB);
 	Parent::load();
 }
 
 void Water::onBind()
 {
 	Shader::push(&_shader);
-	_noise[0]._texture.bind(&_shader);
+	_noise.bind(&_shader, TEXTURE_INDEX_NOISE);
+	_skybox.bind(&_shader, TEXTURE_INDEX_SKYBOX);
+
 	Shader::current()->setUniformFloat("scale", _scale);
 	//Parent::setWireframe(true);
 }
 void Water::onUnbind()
 {
-	_noise[0]._texture.unbind();
+	_skybox.unbind();
+	_noise.unbind();
 	Shader::pop();
 
 }

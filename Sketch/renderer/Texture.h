@@ -2,6 +2,8 @@
 #define TEXTURE_H
 
 //#include <GL/glew.h>
+
+//CREATE CUBMAP Texture
 #include <renderer/Shader.h>
 //CREATE RNDER TARGET BASE CLASS TO BIND TO TEXTURE???
 //(x,y,z)=(s,t,r)
@@ -69,7 +71,9 @@ public:
 			TextureFilterFlag magnify	= TEXTURE_FILTER_LINEAR);
 	virtual ~Texture();
 
-	void  load(GLuint * data, int width, int height,
+	void load(const std::string filename, TextureFormat format= TEXTURE_RGB);
+	
+	void load(unsigned char * data, int width, int height,
 		TextureFormat format=TEXTURE_RGB);
 
 	void  load(float * data, int width, int height,

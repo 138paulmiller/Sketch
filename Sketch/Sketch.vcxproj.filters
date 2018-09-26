@@ -30,6 +30,9 @@
     <Filter Include="Source Files\demo">
       <UniqueIdentifier>{d304fc6b-6e80-4415-8128-e61dee2619e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Images">
+      <UniqueIdentifier>{43c5f343-dabb-4a7d-8166-bead9d9c4b9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Docs\References.txt">
@@ -200,5 +203,10 @@
     <None Include="water\water.vs">
       <Filter>Source Files\water</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Images\Skybox.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

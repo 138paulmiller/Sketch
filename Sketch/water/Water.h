@@ -16,27 +16,10 @@ class Water : public RenderArray<Texture2dVertex, ShaderType_Custom>
 {
 	using Parent = RenderArray<Texture2dVertex, ShaderType_Custom>;
 public:
-	Water(int width, int height, float scale =1, float tessalation = 0.5);
+	Water(int width, int height, float scale = 1, float tessalation = 0.5);
 	~Water() { }
 
-	struct NoiseData
-	{
-		Texture			_texture;		//RGB texture of 3 noise coefficients
-		Array<Color3>	_color3Data;	//vec3f of color data that represents noise data
-		NoiseData() : _texture(
-			TEXTURE_2D
-			, TEXTURE_CLAMP_EDGE, TEXTURE_CLAMP_EDGE
-		) {}
 
-	};
-	enum NoiseIndex : unsigned int
-	{
-		NOISE_0 = 0,
-		NOISE_1,
-		NOISE_2,
-		NOISE_3,
-		NOISE_COUNT
-	};
 	//must be defined for flat shaders
 	void onBind() override;
 	void onUnbind() override;
@@ -46,10 +29,26 @@ public:
 	inline void setTime(float time) { Shader::current()->setUniformFloat("time", time); }
 
 private:
-	void generateNoiseTexture(NoiseIndex index, int width, int height, float tessalation, const std::function<Color3(float u, float v)> & perVertex);
+	enum { TEXTURE_INDEX_NOISE = 0, TEXTURE_INDEX_SKYBOX, TEXTURE_COUNT };
+
+
+	struct NoiseData : Texture
+	{
+		Array<Color3>	_color3Data;	//vec3f of color data that represents noise data
+		NoiseData() : Texture(
+			TEXTURE_2D, TEXTURE_CLAMP_EDGE, TEXTURE_CLAMP_EDGE) {}
+	};
+	struct SkyboxData : Texture
+	{
+		Array<Color4u>	_image;	//vec3f of color data that represents noise data
+		SkyboxData() : Texture(TEXTURE_3D, TEXTURE_CLAMP_EDGE, TEXTURE_CLAMP_EDGE) {}
+	};
+
+	void loadSkyBox(const std::string &filename);
+	void generateNoiseTexture(int width, int height, float tessalation, const std::function<Color3(float u, float v)> & perVertex);
 
 	Shader		_shader;
-	NoiseData	_noise[NOISE_COUNT];
-
+	NoiseData	_noise;
+	SkyboxData  _skybox;
 	float _scale;
 };

@@ -63,6 +63,8 @@ typedef glm::mat4  Mat4;				/*Mat4(1) must be identity*/
 
 typedef glm::vec3  Color3;
 typedef glm::vec4  Color4;
+typedef glm::uvec3 Color3u;
+typedef glm::uvec4 Color4u;
 
 
 

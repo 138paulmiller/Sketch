@@ -256,11 +256,10 @@ PhongColorSphere::PhongColorSphere(float tessalation, const Color4 & color)
 	const float inc2 = inc * 2;
 	float phi, theta, nextPhi, nextTheta;
 	
-	int count = (PI_2 / inc);
-	int a,b,c,d,sz;
+	int count = (int)(PI_2 / inc);
 
 	_indices.resize(count*(count)*2);
-	int i =0, j;
+	int i =0;
 	for (phi = 0; phi <= PI_2 ; phi += inc)
 	{
 

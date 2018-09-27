@@ -134,6 +134,7 @@
   <ItemGroup>
     <Text Include="..\Docs\References.txt" />
     <Text Include="..\Docs\TODO.txt" />
+    <Text Include="..\Images\dawn-of-time\license.txt" />
     <Text Include="log.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +197,12 @@
     <None Include="water\water.vs" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_bk.png" />
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_dn.png" />
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_ft.png" />
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_lf.png" />
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_rt.png" />
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_up.png" />
     <Image Include="..\Images\Skybox.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

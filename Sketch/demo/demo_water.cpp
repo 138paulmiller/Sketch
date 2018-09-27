@@ -8,7 +8,7 @@ int demo_water()
 	LogIn("log.txt");
 
 	const char *title = "Sketch++";
-	int width = 540, height = 540;
+	int width = 800, height = 600;
 
 	//initalizes GL!
 	Window window(title, width, height);

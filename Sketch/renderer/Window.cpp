@@ -129,6 +129,6 @@ bool Window::update()
 	_timeDelta = _time - _prevTime;
 	//_time += _timeDelta;
 	if (_timeDelta < 1000.0f / FPS)
-		SDL_Delay(1000.0f / FPS - _timeDelta);
+		SDL_Delay((int)(1000.0f / FPS - _timeDelta));
 	return _isOpen;
 }

@@ -80,7 +80,7 @@ int demo_test()
 					1
 			};
 		}
-	texture.load(&img[0][0], textureWidth, textureHeight, TEXTURE_RGBA);
+	texture.load(&img[0][0], textureWidth, textureHeight, TEXTURE_RGBA, 0);
 
 	TextureTriangle tri(&texture);
 	while (window.isOpen())

@@ -91,7 +91,7 @@ public:
 		glGetIntegerv(GL_POINT_SIZE, &sz);
 		glPointSize(5);
 		RenderArray<PointVertex, ShaderType_Point>::render();
-		glPointSize(sz);
+		glPointSize((float)sz);
 	}
 
 	virtual void onPreRender() override final

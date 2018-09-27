@@ -68,8 +68,11 @@ Water::Water(int width, int height, float scale,float tessalation)
 
 void Water::loadSkyBox( const std::string &filename)
 {
-	_skybox.load(filename, TEXTURE_RGBA);
-	
+	int width, height;
+	TextureFormat format;
+	_skybox.read(filename, &_skybox._imageData, width, height, format);
+	_skybox.load(_skybox._imageData, width, height, format);
+
 }
 
 void Water::generateNoiseTexture(int width, int height, float tessalation, const std::function<Color3(float u, float v)> & perVertex)
@@ -88,7 +91,7 @@ void Water::generateNoiseTexture(int width, int height, float tessalation, const
 	}
 
 	float * data = &(_noise._color3Data[0][0]);
-	_noise.load(data, width, height, TEXTURE_RGB);
+	_noise.load(data, width, height, TEXTURE_RGB,0);
 	Parent::load();
 }
 

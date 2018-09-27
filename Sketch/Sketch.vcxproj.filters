@@ -33,6 +33,9 @@
     <Filter Include="Resource Files\Images">
       <UniqueIdentifier>{43c5f343-dabb-4a7d-8166-bead9d9c4b9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Images\dawn-of-time">
+      <UniqueIdentifier>{b0007239-d50e-4230-a7bc-0450786a0044}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Docs\References.txt">
@@ -43,6 +46,9 @@
     </Text>
     <Text Include="..\Docs\TODO.txt">
       <Filter>Resource Files\Docs</Filter>
+    </Text>
+    <Text Include="..\Images\dawn-of-time\license.txt">
+      <Filter>Resource Files\Images\dawn-of-time</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +213,24 @@
   <ItemGroup>
     <Image Include="..\Images\Skybox.png">
       <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_bk.png">
+      <Filter>Resource Files\Images\dawn-of-time</Filter>
+    </Image>
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_dn.png">
+      <Filter>Resource Files\Images\dawn-of-time</Filter>
+    </Image>
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_ft.png">
+      <Filter>Resource Files\Images\dawn-of-time</Filter>
+    </Image>
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_lf.png">
+      <Filter>Resource Files\Images\dawn-of-time</Filter>
+    </Image>
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_rt.png">
+      <Filter>Resource Files\Images\dawn-of-time</Filter>
+    </Image>
+    <Image Include="..\Images\dawn-of-time\dawn-of-time_up.png">
+      <Filter>Resource Files\Images\dawn-of-time</Filter>
     </Image>
   </ItemGroup>
 </Project>

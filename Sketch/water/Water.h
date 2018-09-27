@@ -36,12 +36,13 @@ private:
 	{
 		Array<Color3>	_color3Data;	//vec3f of color data that represents noise data
 		NoiseData() : Texture(
-			TEXTURE_2D, TEXTURE_CLAMP_EDGE, TEXTURE_CLAMP_EDGE) {}
+			TEXTURE_2D, TEXTURE_WRAP_CLAMP_EDGE, TEXTURE_WRAP_CLAMP_EDGE) {}
 	};
 	struct SkyboxData : Texture
 	{
-		Array<Color4u>	_image;	//vec3f of color data that represents noise data
-		SkyboxData() : Texture(TEXTURE_3D, TEXTURE_CLAMP_EDGE, TEXTURE_CLAMP_EDGE) {}
+		unsigned char * 	_imageData;	//vec3f of color data that represents noise data
+		//SkyboxData() : Texture(TEXTURE_3D, TEXTURE_WRAP_CLAMP_EDGE, TEXTURE_WRAP_CLAMP_EDGE) {}
+		SkyboxData() : Texture(TEXTURE_2D, TEXTURE_WRAP_CLAMP_EDGE, TEXTURE_WRAP_CLAMP_EDGE) {}
 	};
 
 	void loadSkyBox(const std::string &filename);

@@ -71,13 +71,13 @@ typedef glm::uvec4 Color4u;
  float      	dot			(const Vec2 & a,	const Vec2 & b);
  float      	dot			(const Vec3 & a,	const Vec3 & b);
  float      	dot			(const Vec4 & a,	const Vec4 & b);
-//static const Vec2 &	cross		(const Vec2 & a,	const Vec2 & b);
- const Vec3 &	cross		(const Vec3 & a,	const Vec3 & b);
-//static const Vec4 &	cross		(const Vec4 & a,	const Vec4 & b);
-const Mat4 &	lookAt		(const Vec3 & eye,	const Vec3 & center, const Vec3 &up);
-const Mat4 &	scale		(const Mat4 & mat,	const Vec3 & scalars);
-const Mat4 &	rotate		(const Mat4 & mat,	const Vec3 & axis, float angle);
-const Mat4 &	translate	(const Mat4 & mat,	const Vec3 & deltas);
+//Vec2 cross		(const Vec2 & a,	const Vec2 & b);
+ Vec3 	cross		(const Vec3 & a,	const Vec3 & b);
+//Vec4 cross		(const Vec4 & a,	const Vec4 & b);
+Mat4 	lookAt		(const Vec3 & eye,	const Vec3 & center, const Vec3 &up);
+Mat4 	scale		(const Mat4 & mat,	const Vec3 & scalars);
+Mat4 	rotate		(const Mat4 & mat,	const Vec3 & axis, float angle);
+Mat4 	translate	(const Mat4 & mat,	const Vec3 & deltas);
 
 #define max(x,y) std::max(x,y)
 #define min(x,y) std::min(x,y)

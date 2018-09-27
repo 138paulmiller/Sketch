@@ -35,30 +35,6 @@ struct GerstnerWave
 	float	frequency;
 } waves[MAX_WAVE_COUNT];
 
-vec3 gerstner_wave_normal(vec2  uv, float t )
-{
-	vec3 norm = vec3(0,1,0);
-	//for each wave
-	for(int i = 0; i <wave_count; i++)
-	{
-		float freq  = waves[i].frequency * t;
-		float phase = waves[i].speed * freq;
-		float amp	= waves[i].amplitude;
-
-		float theta = dot(waves[i].dir, uv) + freq + phase ;
-
-
-		float ampfreq = waves[i].amplitude *waves[i].frequency ;
-		
-		float omega = ampfreq* cos(theta);
-		
-		norm.y -= waves[i].steepness * ampfreq * sin(theta);
-
-		norm.x -= waves[i].dir.x * omega; 
-		norm.z -= waves[i].dir.y * omega;
-	}
-	return normalize(norm);
-}
 
 vec3 gerstner_wave_pos( vec2 uv, float t )
 {
@@ -86,6 +62,30 @@ vec3 gerstner_wave_pos( vec2 uv, float t )
 	
 }
 
+vec3 gerstner_wave_normal(vec2  uv, float t )
+{
+	vec3 norm = vec3(0,1,0);
+	//for each wave
+	for(int i = 0; i <wave_count; i++)
+	{
+		float freq  = waves[i].frequency * t;
+		float phase = waves[i].speed * freq;
+		float amp	= waves[i].amplitude;
+
+		float theta = dot(waves[i].dir, uv) + freq + phase ;
+
+
+		float ampfreq = waves[i].amplitude *waves[i].frequency ;
+		
+		float omega = ampfreq* cos(theta);
+		
+		norm.y += 1-waves[i].steepness * ampfreq * sin(theta);
+
+		norm.x -= waves[i].dir.x * omega; 
+		norm.z -= waves[i].dir.y * omega;
+	}
+	return normalize(norm);
+}
 
 void default_waves()
 {
@@ -152,7 +152,7 @@ void main()
 
 
 	pos					= (pos + wave_pos)*scale;
-	vec3 norm			=  normalize(lerp(pos, wave_normal, 0.3));
+	vec3 norm			=  wave_normal;
 	//update normal (rotate by angle diff between new and old pos)
 	
 

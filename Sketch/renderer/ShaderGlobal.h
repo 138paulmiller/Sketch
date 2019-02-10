@@ -2,18 +2,8 @@
 //Global shared Shader Variable Names
 //default vertex attribute names
 
-
-#define SHADER_TYPES						\
-enum ShaderType								\
-{											\
-	ShaderType_Invalid = 0,					\
-	ShaderType_Point = 1,					\
-	ShaderType_Flat,						\
-	ShaderType_PhongColor,					\
-	ShaderType_FlatTexture2d,				\
-	ShaderType_Custom,						\
-	ShaderType_Count						\
-};											\
+#define SAMPLER_COUNT	4
+#define SAMPLER_ID(i)	"sampler" #i
 
 
 #define SHADER_DECLS						\
@@ -35,9 +25,23 @@ static Shader PointShader;					\
 static Shader FlatShader;					\
 static Shader PhongColorShader;				\
 static Shader Texture2dShader;				\
+static Shader CubeMapShader;				\
 
-#define SAMPLER_COUNT	4
-#define SAMPLER_ID(i)	"sampler" #i
+
+
+#define SHADER_TYPES						\
+enum ShaderType								\
+{											\
+	ShaderType_Invalid = 0,					\
+	ShaderType_Point = 1,					\
+	ShaderType_Flat,						\
+	ShaderType_PhongColor,					\
+	ShaderType_FlatTexture2d,				\
+	ShaderType_CubeMap,						\
+	ShaderType_Custom,						\
+	ShaderType_Count						\
+};											\
+
 #define SHADER_DEFS												\
 const char *	Shader::Attrib_Position		= "vs_pos"		;	\
 const char *	Shader::Attrib_Normal		= "vs_normal"	;	\
@@ -59,12 +63,14 @@ Shader Shader::PointShader;										\
 Shader Shader::FlatShader;										\
 Shader Shader::PhongColorShader;								\
 Shader Shader::Texture2dShader;									\
+Shader Shader::CubeMapShader;									\
 
 #define SHADER_INIT												\
 PointShader		.load(GLSL_PREFIX("point"			));			\
 FlatShader		.load(GLSL_PREFIX("flat"			));			\
 PhongColorShader.load(GLSL_PREFIX("phongColor"		));			\
 Texture2dShader	.load(GLSL_PREFIX("flatTexture2d"	));			\
+CubeMapShader	.load(GLSL_PREFIX("cubeMap"	));			\
 																\
 																\
 

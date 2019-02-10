@@ -9,9 +9,10 @@ smooth in vec3 fs_pos;
 smooth in vec3 fs_normal; 
 smooth in vec2 fs_uv;
 
-uniform sampler2D sampler0;	//Perlin Noise
-uniform sampler2D sampler1;	//Skybox TODO change to sampler3D
- out vec4 out_FragColor;
+uniform sampler2D sampler0;	//Skybox TODO change to sampler3D
+
+
+out vec4 out_FragColor;
 
 #define LIGHT_COUNT 8
 #define MATERIAL_COUNT 8
@@ -102,37 +103,32 @@ float schlick(vec3 norm, vec3 incident, float n1, float n2)
 //determine if uv, color
 void main()
 {
+	vec3  sample_pos = fs_pos;// + fs_normal;
+//	vec4 color= texture(sampler0, sample_pos);
 	vec4 color= texture(sampler0, fs_uv);
-	vec4 skycolor = texture(sampler1, fs_uv);
-//TODO set by CPU
+
 	lights[0].pos = 	eye;
 	lights[0].intensity = 1.0;
 	lights[0].color = vec3(1.0);
 
- 
-
-//REF http://devernay.free.fr/cours/opengl/materials.html
-
-	
+/*	
 	materials[0].ka =		vec3(0.0215	, 	0.1745	, 	0.0215	);
 	materials[0].kd =		vec3(0.07568,	0.61424 ,	0.07568	);
 	materials[0].ks =		vec3(1.0	,	1.0		,	1.0);
 	materials[0].alpha =	0.6 * 128;
 	materials[0].base = color;
 	materials[0].mix = 0.5;
-//	norm = fs_normal;
-//	vec4 illum  = vec4(
-//		phong( materials[0], fs_pos, norm, lights[0].pos),
-//		1);
-//	out_FragColor = mix(materials[0].base,illum, materials[0].mix) ;
+
+	vec4 illum  = vec4( phong( materials[0], fs_pos, fs_normal, lights[0].pos), 1);
+	out_FragColor = mix(materials[0].base,illum, materials[0].mix) ;
+*/
 
 	vec3 incident = lights[0].pos - fs_pos;
 	vec3 norm = reflect(fs_normal, incident);
 	//norm *= schlick(fs_normal, lights[0].pos - eye, fs_uv.x, fs_uv.y);	
-	out_FragColor = vec4(norm,1);
-
-//
-	out_FragColor = skycolor ;
+	//out_FragColor = vec4(norm,1);
+	
+	out_FragColor = color;//skycolor ;
 
 
 }

@@ -55,7 +55,7 @@ void Texture::read(const std::string &  filename, unsigned char ** data, int &wi
 
 void Texture::bind(const Shader * shader, int index) const
 {
-	DebugAssert(m_type != TEXTURE_TYPE_NONE);
+	DebugAssert(m_type != TEXTURE_NONE);
 	DebugAssert(index >= 0 && index < SAMPLER_COUNT);
 
 	glActiveTexture(GL_TEXTURE0+index); 
@@ -66,6 +66,6 @@ void Texture::bind(const Shader * shader, int index) const
 
 void Texture::unbind() const
 {
-	DebugAssert(m_type != TEXTURE_TYPE_NONE);
+	DebugAssert(m_type != TEXTURE_NONE);
 	glBindTexture(m_type, 0);
 }

@@ -23,6 +23,7 @@ public:
 	//		prerender
 	//		render
 	//	cleanup
+	//TO BE OVERLOADED BY SUPERCLASSES
 	virtual void load();		
 	virtual void update(float delta);
 	virtual void preRender() ;

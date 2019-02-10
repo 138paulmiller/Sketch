@@ -18,17 +18,17 @@ int demo_water()
 	Vec3 pos(0.5, 1.0, -0.5);
 	Vec3 dir(0, 0, -1.0f);
 	Vec3 up(0, 1, 0);
-	PerspectiveCamera camera((float)width / height, pos, dir, up, 0.001, 50);
+	PerspectiveCamera camera((float)width / height, pos, dir, up, 0.001f, 10000);
 
 	float delta, time = 0;
 
 	const int waterWidth	= 128;
 	const int waterHeight	= 128;
 	float scale = 1;
-	float speed = 0.1;
+	float speed = 0.1f;
 	bool zUp= true;
 
-	Water water(waterWidth, waterHeight, 1, 0.005f);
+	Water water(waterWidth, waterHeight, 1, 0.01f);
 	
 	pos = Vec3(0.5, scale*0.90, -0.5);
 

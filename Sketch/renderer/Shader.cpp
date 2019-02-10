@@ -24,10 +24,15 @@ void Shader::destroy()
 void Shader::push(Shader * shader)
 {
 	DebugAssert(shader);
-	//bind previos
+	
+	//unbind previous
+	//bool isSame = false;
 	if (!shaderStack.empty())
+	{
 		shaderStack.back()->unbind();
+	}
 	shaderStack.push_back(shader);
+	//only bind if new shader was not the same as previous
 	shaderStack.back()->bind();
 
 }

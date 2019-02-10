@@ -3,18 +3,35 @@
 #include <functional>
 #include <renderer/Window.h>
 #include <renderer/Camera.h>
-#include <renderer/RenderArray.h>
-#include <renderer/Texture.h>
+#include <renderer/Mesh.h>
+#include <renderer/CubeMap.h>
 #include <noise/perlin.h>
 
 //http://www.cs.utah.edu/~michael/water/waterPGColor.pdf//height 
 //https://www.cg.tuwien.ac.at/courses/Seminar/WS2007/arbeit_fleck.pdf
 
+//move into sperate file
+class Skybox : public Texture
+{
+public:
+	Skybox() { imageData =0 ; }
+	~Skybox() { delete imageData; }
+	unsigned char * imageData;	//vec3f of color data that represents noise data
+};
+/*
+class Skybox : public CubeMap
+{
+public:
+	Skybox() { imageData = new unsigned char*[6]; }
+	~Skybox() { delete imageData; }
+	unsigned char ** imageData;	//vec3f of color data that represents noise data
+};
+*/
 
 //Move to water folder
-class Water : public RenderArray<Texture2dVertex, ShaderType_Custom>
+class Water : public Mesh<Texture2dVertex, ShaderType_Custom>
 {
-	using Parent = RenderArray<Texture2dVertex, ShaderType_Custom>;
+	using Subclass = Mesh<Texture2dVertex, ShaderType_Custom>;
 public:
 	Water(int width, int height, float scale = 1, float tessalation = 0.5);
 	~Water() { }
@@ -29,27 +46,12 @@ public:
 	inline void setTime(float time) { Shader::current()->setUniformFloat("time", time); }
 
 private:
-	enum { TEXTURE_INDEX_NOISE = 0, TEXTURE_INDEX_SKYBOX, TEXTURE_COUNT };
+	enum { TEXTURE_INDEX_SKYBOX = 0 , TEXTURE_COUNT };
 
-
-	struct NoiseData : Texture
-	{
-		Array<Color3>	_color3Data;	//vec3f of color data that represents noise data
-		NoiseData() : Texture(
-			TEXTURE_2D, TEXTURE_WRAP_CLAMP_EDGE, TEXTURE_WRAP_CLAMP_EDGE) {}
-	};
-	struct SkyboxData : Texture
-	{
-		unsigned char * 	_imageData;	//vec3f of color data that represents noise data
-		//SkyboxData() : Texture(TEXTURE_3D, TEXTURE_WRAP_CLAMP_EDGE, TEXTURE_WRAP_CLAMP_EDGE) {}
-		SkyboxData() : Texture(TEXTURE_2D, TEXTURE_WRAP_CLAMP_EDGE, TEXTURE_WRAP_CLAMP_EDGE) {}
-	};
 
 	void loadSkyBox(const std::string &filename);
-	void generateNoiseTexture(int width, int height, float tessalation, const std::function<Color3(float u, float v)> & perVertex);
 
 	Shader		_shader;
-	NoiseData	_noise;
-	SkyboxData  _skybox;
+	Skybox  _skybox;
 	float _scale;
 };

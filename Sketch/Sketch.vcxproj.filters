@@ -61,9 +61,6 @@
     <ClCompile Include="renderer\Defs.cpp">
       <Filter>Source Files\renderer</Filter>
     </ClCompile>
-    <ClCompile Include="renderer\Mesh.cpp">
-      <Filter>Source Files\renderer</Filter>
-    </ClCompile>
     <ClCompile Include="renderer\RayTracedObject.cpp">
       <Filter>Source Files\renderer</Filter>
     </ClCompile>
@@ -106,6 +103,9 @@
     <ClCompile Include="demo\demo_water.cpp">
       <Filter>Source Files\demo</Filter>
     </ClCompile>
+    <ClCompile Include="renderer\CubeMap.cpp">
+      <Filter>Source Files\renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="renderer\Camera.h">
@@ -115,9 +115,6 @@
       <Filter>Source Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="renderer\Iterable.h">
-      <Filter>Source Files\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\Mesh.h">
       <Filter>Source Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="renderer\RayTracedObject.h">
@@ -147,13 +144,7 @@
     <ClInclude Include="renderer\Stackable.h">
       <Filter>Source Files\renderer</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\RenderArray.h">
-      <Filter>Source Files\renderer</Filter>
-    </ClInclude>
     <ClInclude Include="renderer\RenderShapes.h">
-      <Filter>Source Files\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="renderer\RenderArray.hpp">
       <Filter>Source Files\renderer</Filter>
     </ClInclude>
     <ClInclude Include="renderer\ShaderGlobal.h">
@@ -170,6 +161,18 @@
     </ClInclude>
     <ClInclude Include="water\Water.h">
       <Filter>Source Files\water</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\CubeMap.h">
+      <Filter>Source Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\RenderShapes.hpp">
+      <Filter>Source Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\Mesh.h">
+      <Filter>Source Files\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\Mesh.hpp">
+      <Filter>Source Files\renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +211,12 @@
     </None>
     <None Include="water\water.vs">
       <Filter>Source Files\water</Filter>
+    </None>
+    <None Include="glsl\cubeMap.fs">
+      <Filter>Source Files\glsl</Filter>
+    </None>
+    <None Include="glsl\cubeMap.vs">
+      <Filter>Source Files\glsl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

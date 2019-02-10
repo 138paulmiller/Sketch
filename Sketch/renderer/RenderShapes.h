@@ -3,7 +3,7 @@
 
 #include <renderer/Renderable.h>
 #include <renderer/Texture.h>
-#include <renderer/RenderArray.h>
+#include <renderer/Mesh.h>
 
 //Create node class that contains local and parent matrices
 //Add getLocalMatrix
@@ -16,7 +16,7 @@
 
 
 
-class FlatTriangle : public RenderArray<NormalVertex, ShaderType_Flat>
+class FlatTriangle : public Mesh<NormalVertex, ShaderType_Flat>
 {
 public:
 	FlatTriangle(const Color4 & color = { 1,1,1,1 });
@@ -29,7 +29,7 @@ private:
 	Color4 _color;
 };
 
-class PhongColorTriangle : public RenderArray<ColorVertex, ShaderType_PhongColor>
+class PhongColorTriangle : public Mesh<ColorVertex, ShaderType_PhongColor>
 {
 public:
 	PhongColorTriangle(const Color4 colors[3]);
@@ -38,14 +38,14 @@ private:
 	void onUnbind()  override { }
 };
 
-class TextureTriangle : public RenderArray<Texture2dVertex, ShaderType_FlatTexture2d>
+class TextureTriangle : public Mesh<Texture2dVertex, ShaderType_FlatTexture2d>
 {
 public:
 	TextureTriangle(Texture * texture);
 private:
 	Texture * _texture;
-	void onBind()		{ _texture->bind(Shader::current()); }	/* RenderArray No Color!Superclass Must Override! if super has any textures!"); */
-	void onUnbind() 	{ _texture->unbind(); }	/* RenderArray No Color!Superclass Must Override! if super has any textures!"); */
+	void onBind()		{ _texture->bind(Shader::current()); }	/* Mesh No Color!Superclass Must Override! if super has any textures!"); */
+	void onUnbind() 	{ _texture->unbind(); }	/* Mesh No Color!Superclass Must Override! if super has any textures!"); */
 
 };
 
@@ -53,7 +53,7 @@ private:
 
 
 //Grid
-class FlatGrid : public RenderArray<NormalVertex, ShaderType_Flat>
+class FlatGrid : public Mesh<NormalVertex, ShaderType_Flat>
 {
 public:
 	FlatGrid(float width, float height, float tessalation = 0.5, const Color4 &color = { 0,0,0,0 });
@@ -66,8 +66,22 @@ private:
 };
 
 
+
+
 //Unit Cube
-class PhongColorCube : public RenderArray<ColorVertex, ShaderType_PhongColor>
+//VertexCallback() called for each (x,y,z), uv of cube
+//typedef ()(const Vec3&, const Vec3&, const Vec2&) VertexCallback; //pos, norm, uv
+template <typename VertexCallback>
+class Cube : public Mesh<ColorVertex, ShaderType_Custom>
+{
+public:
+	Cube();
+private:
+	void onBind()	 override {  }
+	void onUnbind()  override {  }
+};
+
+class PhongColorCube : public Mesh<ColorVertex, ShaderType_PhongColor>
 {
 public:
 	PhongColorCube(const Color4 colors[8]);
@@ -77,7 +91,7 @@ private:
 };
 
 //Unit Sphere
-class PointSphere : public  RenderArray<PointVertex, ShaderType_Point>
+class PointSphere : public  Mesh<PointVertex, ShaderType_Point>
 {
 public:
 	using SphereVertex = ColorVertex;
@@ -90,7 +104,7 @@ public:
 		int sz;
 		glGetIntegerv(GL_POINT_SIZE, &sz);
 		glPointSize(5);
-		RenderArray<PointVertex, ShaderType_Point>::render();
+		Mesh<PointVertex, ShaderType_Point>::render();
 		glPointSize((float)sz);
 	}
 
@@ -103,7 +117,7 @@ private:
 
 
 //Unit Sphere
-class PhongColorSphere : public  RenderArray<ColorVertex, ShaderType_PhongColor>
+class PhongColorSphere : public  Mesh<ColorVertex, ShaderType_PhongColor>
 {
 public:
 	using SphereVertex = ColorVertex;
@@ -123,5 +137,5 @@ public:
 	Color4 _color;
 };
 
-
+#include <renderer/RenderShapes.hpp>
 #endif // RENDER_SHAPES_H

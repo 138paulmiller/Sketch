@@ -62,7 +62,7 @@ int demo_test()
 
 	PhongColorCube cube	(&rainbow[0]);
 	FlatGrid grid		(1, 1, 0.5f, { 1,0.02,0.2,1 });
-	PhongColorSphere sphere	(0.005, { 1,0,0.5,1.0 });
+	PhongColorSphere sphere	(0.005f, { 1,0,0.5,1.0 });
 
 
 	Texture texture;

@@ -1,16 +1,16 @@
 
 template <typename VertexType, ShaderType shaderType>
-RenderArray<VertexType, shaderType>::RenderArray(GLuint drawMode ) 
+Mesh<VertexType, shaderType>::Mesh(GLuint drawMode ) 
 		: _transform(1), _drawMode(drawMode) { }
 
 
 template <typename VertexType, ShaderType shaderType>
- RenderArray<VertexType, shaderType>::~RenderArray() {	 }
+ Mesh<VertexType, shaderType>::~Mesh() {	 }
 
 
 
 template <typename VertexType, ShaderType shaderType>
-void RenderArray<VertexType, shaderType>::load() 
+void Mesh<VertexType, shaderType>::load() 
 {
 	bind();
 	_vertexArray.load(Shader::current(), &_vertices[0], _vertices.size(), &_indices[0], _indices.size());
@@ -18,7 +18,7 @@ void RenderArray<VertexType, shaderType>::load()
 }
 
 template <typename VertexType, ShaderType shaderType>
-void RenderArray<VertexType, shaderType>::update(float delta)
+void Mesh<VertexType, shaderType>::update(float delta)
 {
 	bind();
 	_vertexArray.update(Shader::current(), &_vertices[0], _vertices.size(), &_indices[0], _indices.size());
@@ -27,15 +27,15 @@ void RenderArray<VertexType, shaderType>::update(float delta)
 }
 
 template <typename VertexType, ShaderType shaderType>
- void RenderArray<VertexType, shaderType>::preRender()
+ void Mesh<VertexType, shaderType>::preRender()
 {
 	DebugAssert(_vertices.size() && _indices.size()); // > 0 size
-	onPreRender();
 	bind();
+	onPreRender();
 	Shader::current()->setUniformMat4(Shader::Uniform_Model, _transform);
 }
 template <typename VertexType, ShaderType shaderType>
-void RenderArray<VertexType, shaderType>::render()
+void Mesh<VertexType, shaderType>::render()
 {
 
 	Shader::current()->setUniformMat4(Shader::Uniform_Model, _transform);
@@ -59,7 +59,7 @@ void RenderArray<VertexType, shaderType>::render()
 
 
 template <typename VertexType, ShaderType shaderType>
-void RenderArray<VertexType, shaderType>::bind() 
+void Mesh<VertexType, shaderType>::bind() 
 {
 	switch (shaderType)
 	{
@@ -74,7 +74,7 @@ void RenderArray<VertexType, shaderType>::bind()
 
 
 template <typename VertexType, ShaderType shaderType>
-void RenderArray<VertexType, shaderType>::unbind() 
+void Mesh<VertexType, shaderType>::unbind() 
 {
 	/*Custom shaders must be pushed popped by user*/
 	if(shaderType !=  ShaderType_Custom)

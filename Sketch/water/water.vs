@@ -11,12 +11,9 @@ in vec3 vs_pos;
 in vec3 vs_normal;
 in vec2 vs_uv ;
 
-
 smooth out vec3 fs_pos;
 smooth out vec3 fs_normal; 
 smooth out vec2 fs_uv;
-//ADD COLOR UNIFORM
-uniform sampler2D sampler0;	//create another that has a uniform sampler array
 
 uniform float time;
 uniform float scale; //scale wave pos;
@@ -119,13 +116,6 @@ void default_waves()
 }
 
 
-float perlin(vec2 uv, vec3 mix)
-{
-	vec4 noise0 = texture(sampler0, vs_uv);
-	//noise
-	float d				=	mix.x*noise0.x + mix.y*noise0.y + mix.z*noise0.z ;
-	return d;
-}
 
 vec3 lerp(vec3 a, vec3 b, float t)
 {
@@ -138,17 +128,14 @@ void main()
 
 	//TODO make uniforms
 	vec3 mix			= vec3(1.89, -1.5, + 0.5);
-	float d				= perlin(normalize(vs_uv*time), mix) ;
 
 	vec3 pos			= vs_pos;
-	pos.y				+= d;
-
-	vec2 uv				= vs_pos.xz;	//pos on ocean plane;
+	vec2 xz				= vs_pos.xz;	//pos on ocean plane;
 
 	float t				= time;
-	vec3 wave_pos		= gerstner_wave_pos(uv, t);
-	uv					= wave_pos.xz;
-	vec3 wave_normal	= gerstner_wave_normal( uv, t);
+	vec3 wave_pos		= gerstner_wave_pos(xz, t);
+	xz					= wave_pos.xz;
+	vec3 wave_normal	= gerstner_wave_normal( xz, t);
 
 
 	pos					= (pos + wave_pos)*scale;

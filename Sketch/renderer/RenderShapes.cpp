@@ -24,7 +24,7 @@ FlatTriangle::FlatTriangle(const Color4 & color)
 	_indices[1] = 1;
 	_indices[2] = 2;
 	_color = color;
-	RenderArray::load();
+	Mesh::load();
 }
 
 PhongColorTriangle::PhongColorTriangle(const Color4 colors[3])
@@ -47,7 +47,7 @@ PhongColorTriangle::PhongColorTriangle(const Color4 colors[3])
 	_indices[1] = 1;
 	_indices[2] = 2;
 
-	RenderArray::load();
+	Mesh::load();
 }
 
 
@@ -71,7 +71,7 @@ TextureTriangle::TextureTriangle(Texture * texture)
 	_indices[1] = 1;
 	_indices[2] = 2;
 
-	RenderArray::load();
+	Mesh::load();
 }
 
 
@@ -90,7 +90,7 @@ FlatGrid::FlatGrid(float width, float height, float tessalation, const Color4 &c
 	n=floor(width*tess)
 	tessalation determined how many rows/cols are created
 	*/
-
+	Mesh::setDrawMode(GL_TRIANGLE_STRIP);
 	float incW = tessalation*width;
 	float incH = tessalation*height;
 	bool notfloor = false;
@@ -109,33 +109,23 @@ FlatGrid::FlatGrid(float width, float height, float tessalation, const Color4 &c
 	}
 	_color = color;
 	/*
-	B D
-	A C
+	B 
+	A 
 
 	*/
 	//h++;
 	//w++;
-	int s = w;// +1;
-	for (int y = 0; y < h - 1; y++)
-		for (int x = 0; x < w - 1; x++)
+	for (int y = 1; y < h; y++)
+		for (int x = 0; x < w; x++)
 		{
-			a = (x)*s + y;
-			b = (x)*s + y + 1;
-			c = (x + 1)	*s + y;
-			d = (x + 1)	*s + y + 1;
+			a = (y - 1)*w + x;
+			b = (y)*w + x;
 
 			_indices.push_back(a);
 			_indices.push_back(b);
-			_indices.push_back(c);
-
-			_indices.push_back(b);
-			_indices.push_back(d);
-			_indices.push_back(c);
 		}
-
-	RenderArray::load();
+	Mesh::load();
 }
-
 
 
 //Unit Cube
@@ -236,7 +226,7 @@ _rho * cos(_phi)				}	\
 
 
 PhongColorSphere::PhongColorSphere(float tessalation, const Color4 & color)
-	:	RenderArray<ColorVertex, ShaderType_PhongColor>(GL_TRIANGLE_STRIP)
+	:	Mesh<ColorVertex, ShaderType_PhongColor>(GL_TRIANGLE_STRIP)
 {
 	DebugAssert(tessalation > 0 && tessalation < 0.5);
 	_color = color;

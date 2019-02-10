@@ -67,8 +67,8 @@ public:
 		float res, 
 		Vec3 pos, Vec3 dir, Vec3 up,
 
-		float near = 0.001,
-		float far = 10);
+		float near = 0.1,
+		float far = 100000);
 
 	~PerspectiveCamera() {}
 
